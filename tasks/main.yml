@@ -1,0 +1,43 @@
+---
+# tasks file for freebsd-pf
+- name: Copy rules
+  template:
+    dest: /etc/pf.conf
+    src: pf.conf.j2
+
+- name: Enable PF
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pf_enable
+    line: pf_enable="YES"
+- name: Set PF rules path
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pf_rules
+    line: pf_rules="/etc/pf.conf"
+- name: Set PF flags
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pf_flags
+    line: pf_flags=""
+- name: Enable PF log
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pflog_enable
+    line: pflog_enable="YES"
+- name: Set PF log file
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pflog_logfile
+    line: pflog_logfile="/var/log/pflog"
+- name: Set PF log flags
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^pflog_flags
+    line: pflog_flags=""
+- name: Start the pflog service
+  service: name=pflog state=restarted
+- name: Start the pf service
+  shell: sleep 1 && service pf restart
+  async: 1
+  poll: 1
