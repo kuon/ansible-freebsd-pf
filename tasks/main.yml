@@ -37,7 +37,11 @@
     line: pflog_flags=""
 - name: Start the pflog service
   service: name=pflog state=restarted
+
+# We need to sleep and go async, because restarting pf will kill the SSH
+# connection in a way ansible don't like, so we must close it before
+# pf restarts
 - name: Start the pf service
   shell: sleep 1 && service pf restart
-  async: 1
+  async: 5
   poll: 1
