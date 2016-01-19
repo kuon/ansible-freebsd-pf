@@ -1,5 +1,5 @@
 ---
 # defaults file for freebsd-pf
 pf_ext_iface: '{{ ansible_default_ipv4.device }}'
-pf_rules: '[]'
-pf_ssh_whitelist: '[]'
+pf_rules: []
+pf_ssh_whitelist: []
