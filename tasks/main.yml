@@ -12,6 +12,9 @@
 - name: Start the sshguard service
   service: name=sshguard state=restarted
 
+- name: Copy pg whitelist to sshguard too
+  lineinfile: dest=/usr/local/etc/sshguard.whitelist line={{ item }}
+  with_items: pf_ssh_whitelist
 
 - name: Copy rules
   template:
