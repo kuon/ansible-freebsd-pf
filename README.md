@@ -25,7 +25,7 @@ Role Variables
   "proection" rules, default to an empty array
 - `pf_ssh_whitelist`, a whitelist of network in CIDR notation for SSH
   connections, default to an empty array. It is important to whitelist
-  your ansible machine as otherwise it will be blocked by the "ssh_abuse"
+  your ansible machine as otherwise it will be blocked by the "sshabuse"
   table.
 
 Example Playbook

@@ -76,7 +76,11 @@ pass in on $ext_if proto tcp from any to any port ssh flags S/SA synproxy state
 
 
 
-### project from ssh flood
-table <ssh_abuse> persist
-block in quick from <ssh_abuse>
-pass in on $ext_if proto tcp to any port ssh flags S/SA keep state (max-src-conn 10, max-src-conn-rate 3/5, overload <ssh_abuse> flush)
+### protect from ssh flood
+table <sshabuse> persist
+block in quick from <sshabuse>
+pass in on $ext_if proto tcp to any port ssh flags S/SA keep state (max-src-conn 10, max-src-conn-rate 3/5, overload <sshabuse> flush)
+
+### protect ssh with sshguard
+table <sshguard> persist
+block in proto tcp from <sshguard>

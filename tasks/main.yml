@@ -1,5 +1,18 @@
 ---
 # tasks file for freebsd-pf
+- name: Install sshguard
+  pkgng: name=sshguard-pf
+
+- name: Enable sshguard
+  lineinfile:
+    dest: /etc/rc.conf
+    regexp: ^sshguard_enable
+    line: sshguard_enable="YES"
+
+- name: Start the sshguard service
+  service: name=sshguard state=restarted
+
+
 - name: Copy rules
   template:
     dest: /etc/pf.conf
@@ -45,3 +58,5 @@
   shell: sleep 1 && service pf restart
   async: 5
   poll: 1
+
+
