@@ -17,6 +17,7 @@
   with_items: pf_ssh_whitelist
 
 - name: Copy rules
+  tags: pf
   template:
     dest: /etc/pf.conf
     src: pf.conf.j2
@@ -58,8 +59,9 @@
 # connection in a way ansible don't like, so we must close it before
 # pf restarts
 - name: Start the pf service
-  shell: sleep 1 && service pf restart
-  async: 5
-  poll: 1
+  tags: pf
+  command: service pf restart
+  async: 1
+  poll: 0
 
 
