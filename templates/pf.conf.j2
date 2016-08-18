@@ -7,6 +7,9 @@
 # Nicolas Goy <kuon@goyman.com>
 ######################################
 
+icmp6_types_in = "{ echoreq, unreach, neighbrsol, neighbradv, routeradv }"
+icmp6_types_out = "{ echoreq, unreach, neighbrsol, routersol }"
+
 ### macro name for external interface.
 ext_if = "{{ pf_ext_iface }}"
 
@@ -65,6 +68,11 @@ block in quick on $ext_if proto tcp flags SF/SF
 ### outgoing packets. (initial sequence number) broken operating systems
 ### sometimes don't randomize this number, making it guessable.
 pass out on $ext_if proto { tcp, udp, icmp } from any to any modulate state
+pass out on $ext_if inet6 proto { tcp, udp } from any to any keep state
+
+# ICMPv6
+pass out on $ext_if inet6 proto icmp6 all icmp6-type $icmp6_types_out
+pass in on $ext_if inet6 proto icmp6 all icmp6-type $icmp6_types_in
 
 ### set a rule that allows inbound ssh traffic with synproxy handshaking.
 pass in on $ext_if proto tcp from any to any port ssh flags S/SA synproxy state
